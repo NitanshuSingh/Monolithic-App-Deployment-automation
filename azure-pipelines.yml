@@ -1,0 +1,114 @@
+trigger: none 
+
+pool: Default
+
+# Set JAVA_HOME variable for SonarQube tasks
+variables:
+  JAVA_HOME: 'C:\Program Files\Microsoft\jdk-17.0.15.6-hotspot'
+
+# Define stages for the pipeline
+stages:
+
+# SAST Scan and Build Application Stage
+- stage: SASTScanAndBuildApplication
+  displayName: 'SonarQube Scan and Build Artifacts'
+  jobs:
+  - job: sonarQubeScanning
+    displayName: 'SonarQube Scanning and Build'
+    steps:
+    - checkout: self
+      displayName: 'Checkout source code'
+      fetchDepth: 0
+
+    - task: SonarQubePrepare@8
+      displayName: 'SonarQube Prepare Analysis'
+      inputs:
+        SonarQube: 'sonar-connect'
+        scannerMode: 'cli'
+        configMode: 'manual'
+        cliProjectKey: 'todo-app_ReactTodoUIMonolith.git_fcf5cbf1-43bd-460b-8158-bc9e03679957'
+        cliProjectName: 'ReactTodoUIMonolith.git'
+        cliSources: '.'
+
+    - task: Npm@1
+      displayName: 'Install Node Modules'
+      inputs:
+        command: 'install'
+        workingDir: '.'
+
+    - task: Npm@1
+      displayName: 'Build Application'
+      inputs:
+        command: 'custom'
+        workingDir: '.'
+        customCommand: 'run build'
+
+    - task: SonarQubeAnalyze@8
+      displayName: Sonarqube code analysis
+      inputs:
+        jdkversion: 'JAVA_HOME_17_X64'
+
+    - task: SonarQubePublish@8
+      displayName: Publish sonarqube result
+      inputs:
+        pollingTimeoutSec: '300'
+
+## To Create and Publish Artifacts to Azure Artifacts Feed
+
+    - task: UniversalPackages@0
+      inputs:
+        command: 'publish'
+        publishDirectory: '$(Build.ArtifactStagingDirectory)'
+        feedsToUsePublish: 'internal'
+        vstsFeedPublish: 'c9cab2ef-b0a5-4b99-bf2c-d8f2d9cf0690/c4f7a5e6-fb23-46d6-95cf-263c68f91151'
+        vstsFeedPackagePublish: 'todo'
+        versionOption: 'custom'
+        versionPublish: '1.0.0'
+        packagePublishDescription: 'ToDo-artifacts'
+        
+# To Publish Artifacts to be used in Deployment Stage
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifacts'
+      inputs:
+        PathtoPublish: 'build'
+        ArtifactName: 'artifacts'
+        publishLocation: 'Container'
+
+## Deployment Stage to Dev Environment
+- stage: DeployToDevEnvironment
+  displayName: 'Deploy to Dev Environment'
+  dependsOn: SASTScanAndBuildApplication
+  jobs:
+  - deployment: DeployWebApp
+    displayName: 'Deploy Web Application to Dev Environment'
+# creates an environment if it doesn't exist
+    environment: 
+      name: 'dev'
+      resourceType: virtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              buildType: 'current'
+              artifactName: 'artifacts'
+              targetPath: '$(Pipeline.Workspace)/artifacts'
+
+          - script: |
+             cd $(Pipeline.Workspace)/artifacts
+             sudo pwd
+             sudo rm -rf /var/www/html/*
+            displayName: 'Clean old deployment'
+
+          - script: |
+              sudo cp -r $(Pipeline.Workspace)/artifacts/* /var/www/html/
+            displayName: 'Deploying new build..'
+
+          - script: |
+              sudo systemctl restart nginx
+            displayName: 'Restart Nginx'
+
+          
+
+        
