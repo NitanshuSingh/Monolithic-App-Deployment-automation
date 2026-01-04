@@ -63,7 +63,7 @@ stages:
         vstsFeedPublish: 'c9cab2ef-b0a5-4b99-bf2c-d8f2d9cf0690/c4f7a5e6-fb23-46d6-95cf-263c68f91151'
         vstsFeedPackagePublish: 'todo'
         versionOption: 'custom'
-        versionPublish: '1.0.0'
+        versionPublish: '1.0.$(Build.BuildId)'
         packagePublishDescription: 'ToDo-artifacts'
         
 # To Publish Artifacts to be used in Deployment Stage
