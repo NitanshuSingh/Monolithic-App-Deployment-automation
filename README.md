@@ -20,6 +20,44 @@ C:\Program Files\Microsoft\jdk-17.0.15.6-hotspot
 variables:
   JAVA_HOME: 'C:\Program Files\Microsoft\jdk-17.0.15.6-hotspot'
 ```
+___
+
+### Azure DevOps Environments and Deployment Jobs
+
+**Environment**
+An Environment in Azure DevOps represents a deployment target such as a Virtual Machine, Kubernetes cluster, or App Service. Environments provide visibility, traceability, and access control for deployments.
+
+Key points:
+- Environments are created at project level
+- Resources (VMs, AKS, etc.) are added to an environment
+- Each resource runs its own deployment job
+- Environment-level approvals and checks can be applied
+
+**Deployment Jobs**
+Deployment jobs are special jobs designed to deploy applications to environment resources.
+
+Key points:
+- Defined using the `deployment:` keyword
+- Must be linked to an Environment
+- Execute directly on the environment resource (for example, a VM)
+- Support deployment strategies like runOnce and rolling
+
+Behavior:
+- If multiple VMs are added to the same environment, the deployment runs on all VMs
+- Artifacts are downloaded directly on the target machine
+- No manual copying from build agent to VM is required
+
+**Example Flow**
+1. Build pipeline creates an artifact
+2. Artifact is stored in Azure Artifacts
+3. Deployment job targets an Environment
+4. Job runs on each VM resource in that Environment
+5. Application is deployed consistently across all machines
+
+**Summary**
+Environments define *where* to deploy, and deployment jobs define *how* to deploy. Together, they enable controlled, repeatable, and multi-machine deployments.
+
+___
 
 # Azure DevOps Artifacts – Universal Packages
 
