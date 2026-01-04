@@ -54,6 +54,19 @@ Behavior:
 4. Job runs on each VM resource in that Environment
 5. Application is deployed consistently across all machines
 
+```bash
+  - deployment: DeployWebApp
+    displayName: 'Deploy Web Application to Dev Environment'
+# creates an environment if it doesn't exist
+    environment: 
+      name: 'dev'
+      resourceType: virtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo "Hello"
+```
 **Summary**
 Environments define *where* to deploy, and deployment jobs define *how* to deploy. Together, they enable controlled, repeatable, and multi-machine deployments.
 
