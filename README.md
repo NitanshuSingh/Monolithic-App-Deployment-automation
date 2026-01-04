@@ -1,5 +1,26 @@
 # Monolithic-App-Deployment-automation
 
+### Java Capability Issue in Azure DevOps Agent
+
+**Error**
+No agent found in pool Default which satisfies the following demand: java
+
+**Root Cause**
+JAVA_HOME was either pointing to the bin directory instead of the JDK root, or it was updated after the Azure DevOps agent service had already started. The agent reads environment variables only at startup, so changes were not reflected in agent capabilities.
+
+**Solution**
+1. Set JAVA_HOME to the JDK root directory:
+```bash
+C:\Program Files\Microsoft\jdk-17.0.15.6-hotspot
+```
+2. Ensure the JDK bin directory is present in the PATH variable.
+3. Restart or reconfigure the Azure DevOps agent service so that new environment variables are picked up.
+4. As a workaround, explicitly define JAVA_HOME in the pipeline variables.
+```bash
+variables:
+  JAVA_HOME: 'C:\Program Files\Microsoft\jdk-17.0.15.6-hotspot'
+```
+
 # Azure DevOps Artifacts – Universal Packages
 
 ## Publish and Consume Build Artifacts
