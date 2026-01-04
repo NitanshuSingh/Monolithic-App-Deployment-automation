@@ -110,3 +110,5 @@ Azure DevOps Artifacts Universal Packages provide a secure, versioned, and scala
 
 Build once, store centrally, deploy everywhere.
 
+<img width="1532" height="335" alt="image" src="https://github.com/user-attachments/assets/493efa6a-aa4e-4662-836b-6ef6d5e9e594" />
+
