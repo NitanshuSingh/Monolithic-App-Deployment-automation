@@ -1,5 +1,4 @@
 trigger: none 
-
 pool: Default
 
 # Set JAVA_HOME variable for SonarQube tasks
