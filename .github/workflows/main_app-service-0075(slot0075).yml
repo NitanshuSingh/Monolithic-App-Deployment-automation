@@ -65,9 +65,10 @@ jobs:
         with:
           app-name: 'app-service-0075'
           slot-name: 'slot0075'
-          package: ${{ github.workspace }}/build
+          package: .
 
           
+
 
 
 
