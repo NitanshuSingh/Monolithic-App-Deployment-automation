@@ -47,7 +47,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build
-          path: .
+          path: build
           
       - name: Verify build folder
         run: ls -la
@@ -65,9 +65,10 @@ jobs:
         with:
           app-name: 'app-service-0075'
           slot-name: 'slot0075'
-          package: .
+          package: build
 
           
+
 
 
 
