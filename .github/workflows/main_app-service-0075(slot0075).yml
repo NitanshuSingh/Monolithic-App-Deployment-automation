@@ -65,13 +65,8 @@ jobs:
         with:
           app-name: 'app-service-0075'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          slot-name: 'slot0075'
+          slot-name: 'production'
           package: build
-
-      - name: Set startup command
-        run: |
-          az webapp config set --resource-group dev-rg-webapp --name app-service-0075 --startup-file "pm2 serve /home/site/wwwroot --no-daemon --spa"
-          
 
 
 
