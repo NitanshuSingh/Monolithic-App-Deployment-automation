@@ -61,6 +61,7 @@ jobs:
         with:
           app-name: 'app-service-0075'
           slot-name: 'Production'
-          package: .
+          package: build
 
           
+
