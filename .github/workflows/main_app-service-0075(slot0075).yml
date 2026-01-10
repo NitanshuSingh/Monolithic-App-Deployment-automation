@@ -65,8 +65,9 @@ jobs:
         with:
           app-name: 'app-service-0075'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          slot-name: 'production'
+          slot-name: 'app-service-0075'
           package: build
+
 
 
 
