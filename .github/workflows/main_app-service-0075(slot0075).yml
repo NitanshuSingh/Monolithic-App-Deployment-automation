@@ -64,10 +64,18 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'app-service-0075'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           slot-name: 'slot0075'
           package: build
 
+      - name: Set startup command
+        run: |
+          az webapp config set \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --name app-service-0075 \
+            --startup-file "pm2 serve /home/site/wwwroot --no-daemon --spa"
           
+
 
 
 
