@@ -17,6 +17,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+
+      - name: npm install, build, and test
+        run: |
+          npm install
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -51,6 +59,8 @@ jobs:
           app-name: 'app-service-0075'
           slot-name: 'Production'
           package: .
-          startup-command: npm run dev
+          startup-command: npm run start
+        
           
+
 
