@@ -17,15 +17,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      # - name: Set up Node.js version
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '22.x'
 
-      # - name: npm install, build, and test
-      #   run: |
-      #     npm install
-      #     npm run build
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test --if-present
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -45,16 +47,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      - name: validate path
-        run: ls -al
-          
       
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9BAD4CFBC9584B0883C7617A0DA2F0D0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0E32AE6B9EAF4CC4BD7ED79C72E33FFE }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_827A034F277844058E98EF5040D6075D }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2814B935189349658926E4C5116604A4 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B8BA57197B864F4E983B22F0DC8181BD }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_518F084ACEF24A5BAD5EE0D0022CB95D }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -63,11 +62,4 @@ jobs:
           app-name: 'app-service-0075'
           slot-name: 'Production'
           package: .
-          startup-command: node server.js
-        
           
-
-
-
-
-
