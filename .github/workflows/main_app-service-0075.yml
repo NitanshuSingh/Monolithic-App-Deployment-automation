@@ -62,5 +62,5 @@ jobs:
           app-name: 'app-service-0075'
           slot-name: 'Production'
           package: .
-          startup-command: npx serve -s /home/site/wwwroot -l $PORT
           
+
