@@ -6,3 +6,4 @@ variable "nic" {}
 variable "vm" {}
 variable "nsg" {}
 variable "security_rule" {}
+variable "lb" {}

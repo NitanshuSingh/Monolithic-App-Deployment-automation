@@ -36,6 +36,11 @@ pip = {
     location            = "centralindia"
     resource_group_name = "app01-dev-rg"
   }
+  pip3 = {
+    name                = "lb-pip"
+    location            = "centralindia"
+    resource_group_name = "app01-dev-rg"
+  }
 }
 
 
@@ -67,7 +72,7 @@ vm = {
     location            = "centralindia"
     size                = "Standard_D2ls_v5"
     admin_username      = "adminuser"
-    admin_password      = ""
+    admin_password      = "User@123456"
     nic_name            = "ui-nic"
   }
   vm2 = {
@@ -76,7 +81,7 @@ vm = {
     location            = "centralindia"
     size                = "Standard_D2ls_v5"
     admin_username      = "adminuser"
-    admin_password      = ""
+    admin_password      = "User@123456"
     nic_name            = "app-nic"
   }
 }
@@ -109,5 +114,20 @@ security_rule = {
     destination_port_range     = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
+  }
+}
+
+lb = {
+  lb1 = {
+    name = "lb-internal-app01"
+    location = "centralindia"
+    resource_group_name = "app01-dev-rg"
+  }
+  lb2 = {
+    name = "lb-ext-app01"
+    location = "centralindia"
+    resource_group_name = "app01-dev-rg"
+    frontend_ip_conf_name = "lb-pip"
+    pip_name = "lb-pip"
   }
 }

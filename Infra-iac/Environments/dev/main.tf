@@ -34,3 +34,9 @@ module "nsg" {
   nsg           = var.nsg
   security_rule = var.security_rule
 }
+
+module "lb" {
+  source = "../../modules/azurerm_load_balancer"
+  lb = var.lb
+  depends_on = [ module.rg, module.pip ]
+}
